@@ -5,6 +5,7 @@ resource "aws_instance" "Nginx" {
   key_name = var.env.key_name
   user_data = var.env.user_data
   vpc_security_group_ids = [aws_security_group.sg.id]
+  associate_public_ip_address = true
   tags = {
     Name = "${var.env.env}-Nginx"
   }
@@ -17,18 +18,20 @@ resource "aws_security_group" "sg" {
   }
 }
 
-resource "aws_vpc_security_group_ingress_rule" "http" {
+resource "aws_security_group_rule" "http" {
+  type = "ingress"
   security_group_id = aws_security_group.sg.id
-  cidr_ipv4 = var.env.public_cidr
+  cidr_blocks = [var.env.public_cidr]
   from_port = 80
-  ip_protocol = "tcp"
+  protocol = "tcp"
   to_port = 80
 }
 
-resource "aws_vpc_security_group_ingress_rule" "ssh" {
+resource "aws_security_group_rule" "ssh" {
+  type = "ingress"
   security_group_id = aws_security_group.sg.id
-  cidr_ipv4 = var.env.public_cidr
+  cidr_blocks = ["0.0.0.0/0"]
   from_port = 22
-  ip_protocol = "tcp"
+  protocol = "tcp"
   to_port = 22
 }
