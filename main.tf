@@ -14,7 +14,7 @@ locals {
 #   public_key = file(local.user_data_files.key)
   
   user_data = <<-EOF
-  #!/bin/bash
+  #!/bin/bash 
 
   set -e
 
@@ -33,10 +33,10 @@ locals {
   EOF
 }
 
-resource "aws_key_pair" "deployer" {
-  key_name   = "public_key"
-  public_key = file("~/.ssh/id_rsa.pub")
-}
+# resource "aws_key_pair" "deployer" {
+#   key_name   = "public_key"
+#   public_key = file("~/.ssh/id_rsa.pub")
+# }
 
 module "ec2" {
   source = "./modules/ec2"
@@ -45,12 +45,17 @@ module "ec2" {
   instance_type = var.env.instance_type
   user_data = local.user_data
   subnet_id = module.vpc.public_subnet
-  key_name = "public_key"
+  # key_name = "public_key"
+  public_key = var.env.public_key
+  private_key =  var.env.private_key
   env = local.env
   aws_vpc = module.vpc.aws_vpc
   public_cidr = var.env.public_cidr
 
+ 
+
   }
+  
 }
 
 module "vpc" {
