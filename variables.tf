@@ -8,5 +8,6 @@ variable "env" {
     public_cidr   : string
     cidr          : string
     private_cidr  : string
+    name : list(string)
   })
 }

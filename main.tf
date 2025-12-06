@@ -49,6 +49,7 @@ module "ec2" {
   public_key = var.env.public_key
   private_key =  var.env.private_key
   env = local.env
+  name = var.env.name
   aws_vpc = module.vpc.aws_vpc
   public_cidr = var.env.public_cidr
 

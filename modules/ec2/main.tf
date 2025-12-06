@@ -1,4 +1,5 @@
 resource "aws_instance" "Nginx" {
+  for_each = toset(var.env.name)
   ami = var.env.ami
   instance_type = var.env.instance_type
   subnet_id = var.env.subnet_id
@@ -7,7 +8,7 @@ resource "aws_instance" "Nginx" {
   vpc_security_group_ids = [aws_security_group.sg.id]
   associate_public_ip_address = true
   tags = {
-    Name = "${var.env.env}-Nginx"
+    Name = "${each.value}-Nginx"
   }
   provisioner "remote-exec" {
     inline = [

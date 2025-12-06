@@ -10,6 +10,7 @@ variable "env" {
       aws_vpc : string
       public_cidr : string
       env : string
+      name : list(string)
 
     })
   
